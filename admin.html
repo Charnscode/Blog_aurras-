@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - Blog Aurras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+      min-height: 100vh;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .login-box {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 172, 193, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .login-box h1 {
+      color: #00838f;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      color: #00838f;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #b2ebf2;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #00acc1;
+    }
+
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00acc1, #00838f);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 172, 193, 0.4);
+    }
+
+    .admin-container {
+      display: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .admin-header {
+      background: linear-gradient(135deg, #00acc1, #00838f);
+      color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-header h1 {
+      font-size: 2rem;
+    }
+
+    .logout-btn {
+      background: #ff5252;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #ff1744;
+      transform: scale(1.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 172, 193, 0.2);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      color: #00acc1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: white;
+      border: 2px solid #00acc1;
+      color: #00acc1;
+      padding: 12px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .tab-btn:hover, .tab-btn.active {
+      background: #00acc1;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 172, 193, 0.2);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .form-row {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row label {
+      display: block;
+      color: #00838f;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-row input, .form-row textarea, .form-row select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #b2ebf2;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+    }
+
+    .form-row textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-row input:focus, .form-row textarea:focus {
+      outline: none;
+      border-color: #00acc1;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #00acc1, #00838f);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 172, 193, 0.4);
+    }
+
+    .articles-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .articles-table th {
+      background: #00acc1;
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .articles-table td {
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .articles-table tr:hover {
+      background: #e0f7fa;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .edit-btn, .delete-btn, .view-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .edit-btn {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .delete-btn {
+      background: #ff5252;
+      color: white;
+    }
+
+    .view-btn {
+      background: #00acc1;
+      color: white;
+    }
+
+    .edit-btn:hover, .delete-btn:hover, .view-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .comments-list {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .comment-item {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: #00838f;
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .alert-success {
+      background: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .alert-error {
+      background: #ffcdd2;
+      color: #c62828;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #999;
+    }
+
+    @media (max-width: 768px) {
+      .admin-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .articles-table {
+        font-size: 0.9rem;
+      }
+
+      .action-btns {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-box">
+      <h1>🔐 Connexion Admin</h1>
+      <div id="loginAlert"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text" id="username" required placeholder="admin">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="login-btn">Se connecter</button>
+      </form>
+      <p style="margin-top: 1rem; text-align: center; color: #666; font-size: 0.9rem;">
+        Par défaut: admin / admin123
+      </p>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="admin-container" id="adminContainer">
+    <div class="admin-header">
+      <div>
+        <h1>📊 Panel d'Administration</h1>
+        <p style="opacity: 0.9;">Bienvenue, <span id="adminName">Aurras</span></p>
+      </div>
+      <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <h3 id="totalArticles">0</h3>
+        <p>Articles publiés</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalComments">0</h3>
+        <p>Commentaires</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalLikes">0</h3>
+        <p>Likes totaux</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalViews">0</h3>
+        <p>Vues totales</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalFollowers">0</h3>
+        <p>Followers</p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('articles')">📝 Articles</button>
+      <button class="tab-btn" onclick="switchTab('new-article')">➕ Nouvel Article</button>
+      <button class="tab-btn" onclick="switchTab('comments')">💬 Commentaires</button>
+      <button class="tab-btn" onclick="switchTab('followers')">👥 Followers</button>
+    </div>
+
+    <!-- Articles Tab -->
+    <div class="tab-content active" id="articlesTab">
+      <h2 style="color: #00838f; margin-bottom: 1.5rem;">Gérer les articles</h2>
+      <div id="articlesTableContainer"></div>
+    </div>
+
+    <!-- New Article Tab -->
+    <div class="tab-content" id="newArticleTab">
+      <h2 style="color: #00838f; margin-bottom: 1.5rem;">Créer un nouvel article</h2>
+      <div id="articleAlert"></div>
+      <form id="articleForm">
+        <div class="form-row">
+          <label>Titre *</label>
+          <input type="text" id="articleTitle" required>
+        </div>
+        <div class="form-row">
+          <label>Catégorie *</label>
+          <select id="articleCategory" required>
+            <option value="Programmation">Programmation</option>
+            <option value="Développement Web">Développement Web</option>
+            <option value="Cybersécurité">Cybersécurité</option>
+            <option value="Hydrogéologie">Hydrogéologie</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>URL de l'image</label>
+          <input type="url" id="articleImage" placeholder="https://exemple.com/image.jpg">
+        </div>
+        <div class="form-row">
+          <label>Temps de lecture</label>
+          <input type="text" id="articleReadTime" placeholder="ex: 8 min">
+        </div>
+        <div class="form-row">
+          <label>Résumé (excerpt) *</label>
+          <textarea id="articleExcerpt" required placeholder="Court résumé de l'article..."></textarea>
+        </div>
+        <div class="form-row">
+          <label>Contenu complet *</label>
+          <textarea id="articleContent" required placeholder="Contenu complet de l'article..." style="min-height: 300px;"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">✅ Publier l'article</button>
+      </form>
+    </div>
+
+    <!-- Comments Tab -->
+    <div class="tab-content" id="commentsTab">
+      <h2 style="color: #00838f; margin-bottom: 1.5rem;">Tous les commentaires</h2>
+      <div class="comments-list" id="commentsList"></div>
+    </div>
+
+    <!-- Followers Tab -->
+    <div class="tab-content" id="followersTab">
+      <h2 style="color: #00838f; margin-bottom: 1.5rem;">Liste des followers</h2>
+      <div id="followersList"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // Configuration
+    const API_URL = 'https://blog-aurras.wuaze.com/?i=1'; // Changez avec votre URL
+    let isLoggedIn = false;
+
+    // Credentials (EN PRODUCTION, UTILISEZ UN VRAI SYSTÈME D'AUTH!)
+    const ADMIN_USERNAME = 'Charnscode';
+    const ADMIN_PASSWORD = 'Charnokgb2007';
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if(username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        isLoggedIn = true;
+        sessionStorage.setItem('adminLoggedIn', 'true');
+        showAdmin();
+        loadStats();
+        loadArticles();
+      } else {
+        showAlert('loginAlert', 'Identifiants incorrects !', 'error');
+      }
+    });
+
+    // Check if already logged in
+    if(sessionStorage.getItem('adminLoggedIn') === 'true') {
+      isLoggedIn = true;
+      showAdmin();
+      loadStats();
+      loadArticles();
+    }
+
+    function showAdmin() {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('adminContainer').style.display = 'block';
+    }
+
+    function logout() {
+      isLoggedIn = false;
+      sessionStorage.removeItem('adminLoggedIn');
+      document.getElementById('loginContainer').style.display = 'flex';
+      document.getElementById('adminContainer').style.display = 'none';
+    }
+
+    // Switch Tabs
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tabName + 'Tab').classList.add('active');
+
+      if(tabName === 'comments') loadComments();
+      if(tabName === 'followers') loadFollowers();
+    }
+
+    // Load Statistics
+    async function loadStats() {
+      try {
+        const response = await fetch(`${API_URL}/stats`);
+        const data = await response.json();
+        
+        if(data.success) {
+          document.getElementById('totalArticles').textContent = data.data.total_articles;
+          document.getElementById('totalComments').textContent = data.data.total_comments;
+          document.getElementById('totalLikes').textContent = data.data.total_likes;
+          document.getElementById('totalViews').textContent = data.data.total_views;
+          document.getElementById('totalFollowers').textContent = data.data.total_followers;
+        }
+      } catch(error) {
+        console.error('Erreur:', error);
+      }
+    }
+
+    // Load Articles
+    async function loadArticles() {
+      try {
+        const response = await fetch(`${API_URL}/articles`);
+        const data = await response.json();
+        
+        if(data.success) {
+          renderArticlesTable(data.data);
+        }
+      } catch(error) {
+        console.error('Erreur:', error);
+      }
+    }
+
+    function renderArticlesTable(articles) {
+      const container = document.getElementById('articlesTableContainer');
+      
+      if(articles.length === 0) {
+        container.innerHTML = '<div class="empty-state">Aucun article pour le moment.</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <table class="articles-table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Catégorie</th>
+              <th>Likes</th>
+              <th>Vues</th>
+              <th>Commentaires</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${articles.map(article => `
+              <tr>
+                <td><strong>${article.title}</strong></td>
+                <td>${article.category}</td>
+                <td>❤️ ${article.likes}</td>
+                <td>👁️ ${article.views}</td>
+                <td>💬 ${article.comment_count}</td>
+                <td>${new Date(article.created_at).toLocaleDateString('fr-FR')}</td>
+                <td>
+                  <div class="action-btns">
+                    <button class="view-btn" onclick="viewArticle(${article.id})">👁️</button>
+                    <button class="edit-btn" onclick="editArticle(${article.id})">✏️</button>
+                    <button class="delete-btn" onclick="deleteArticle(${article.id})">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Create Article
+    document.getElementById('articleForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const articleData = {
+        title: document.getElementById('articleTitle').value,
+        category: document.getElementById('articleCategory').value,
+        image_url: document.getElementById('articleImage').value,
+        read_time: document.getElementById('articleReadTime').value,
+        excerpt: document.getElementById('articleExcerpt').value,
+        content: document.getElementById('articleContent').value
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/articles`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(articleData)
+        });
+
+        const data = await response.json();
+
+        if(data.success) {
+          showAlert('articleAlert', '✅ Article publié avec succès !', 'success');
+          document.getElementById('articleForm').reset();
+          loadStats();
+          loadArticles();
+        } else {
+          showAlert('articleAlert', '❌ Erreur lors de la publication', 'error');
+        }
+      } catch(error) {
+        showAlert('articleAlert', '❌ Erreur de connexion', 'error');
+      }
+    });
+
+    // Delete Article
+    async function deleteArticle(id) {
+      if(!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
+      
+      // Note: Vous devez ajouter l'endpoint DELETE dans api.php
+      alert('Fonction de suppression à implémenter dans api.php');
+    }
+
+    // Edit Article
+    function editArticle(id) {
+      alert('Fonction d\'édition à implémenter');
+    }
+
+    // View Article
+    function viewArticle(id) {
+      window.open(`/index.html#article-${id}`, '_blank');
+    }
+
+    // Load Comments
+    async function loadComments() {
+      const container = document.getElementById('commentsList');
+      container.innerHTML = '<p style="text-align: center;">Chargement des commentaires...</p>';
+      
+      try {
+        const articlesResponse = await fetch(`${API_URL}/articles`);
+        const articlesData = await articlesResponse.json();
+        
+        let allComments = [];
+        
+        for(let article of articlesData.data) {
+          const commentsResponse = await fetch(`${API_URL}/comments/${article.id}`);
+          const commentsData = await commentsResponse.json();
+          
+          if(commentsData.success && commentsData.data.length > 0) {
+            commentsData.data.forEach(comment => {
+              allComments.push({
+                ...comment,
+                article_title: article.title
+              });
+            });
+          }
+        }
+
+        if(allComments.length === 0) {
+          container.innerHTML = '<div class="empty-state">Aucun commentaire pour le moment.</div>';
+          return;
+        }
+
+        container.innerHTML = allComments.map(comment => `
+          <div class="comment-item">
+            <div class="comment-header">
+              <div>
+                <span class="comment-author">👤 ${comment.author_name}</span>
+                <span style="color: #999; font-size: 0.9rem;"> sur "${comment.article_title}"</span>
+              </div>
+              <span class="comment-date">${new Date(comment.created_at).toLocaleDateString('fr-FR')}</span>
+            </div>
+            <p>${comment.comment_text}</p>
+          </div>
+        `).join('');
+      } catch(error) {
+        container.innerHTML = '<div class="empty-state">Erreur de chargement</div>';
+      }
+    }
+
+    // Load Followers
+    function loadFollowers() {
+      const container = document.getElementById('followersList');
+      container.innerHTML = '<div class="empty-state">Fonctionnalité à venir...</div>';
+    }
+
+    // Show Alert
+    function showAlert(containerId, message, type) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => container.innerHTML = '', 5000);
+    }
+  </script>
+
+</body>
+</html>

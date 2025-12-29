@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog d'Aurras Charnel - Hydrogéologie, Développement Web et Cybersécurité">
+  <meta name="keywords" content="hydrogéologie, développement web, cybersécurité, programmation">
+  <meta name="author" content="Aurras Charnel KOUGBE ZOGAN">
+  <link rel="stylesheet" href="style.css">
+  <title>Blog Aurras Charnel_Tech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+   
+  </style>
+</head>
+<body>
+
+  <!-- Loading Spinner -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo" onclick="window.location.reload()">
+        Charns<span>Blog</span>
+      </div>
+      <nav class="nav-menu">
+        <div class="search-bar">
+          <input type="text" class="search-input" id="searchInput" placeholder="Rechercher...">
+          <button class="search-btn" onclick="searchArticles()">🔍</button>
+        </div>
+        <a href="#about" class="nav-link">À propos</a>
+        <a href="#articles" class="nav-link">Articles</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <button class="follow-btn" id="followBtn" onclick="toggleFollow()">
+          + Suivre
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>💧 Hydrogéologie & Tech 💻</h1>
+    <p>Le blog d'un passionné du code</p>
+    <a href="#articles" class="cta-btn">Découvrir les articles</a>
+  </section>
+
+  <!-- Stats Banner -->
+  <div class="stats-banner">
+    <div class="stats-container">
+      <div class="stat-item">
+        <h3 id="totalArticles">0</h3>
+        <p>📝 Articles</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="totalFollowers">0</h3>
+        <p>👥 Followers</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="totalLikes">0</h3>
+        <p>❤️ Likes</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="totalViews">0</h3>
+        <p>👁️ Vues</p>
+      </div>
+      <div class="stat-item">
+        <h3 id="totalComments">0</h3>
+        <p>💬 Commentaires</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="about-header">
+        <div class="avatar">AC</div>
+        <div>
+          <h2 style="color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 0.5rem;">
+            Aurras Charnel KOUGBE ZOGAN
+          </h2>
+          <p style="color: var(--text-light); font-size: 1.05rem;">
+            🎓 Étudiant en Hydrogéologie • 💻 Passionné du  Développement Web • 🔐 Cybersécurité
+          </p>
+        </div>
+      </div>
+      <p style="color: var(--text-light); font-size: 1.05rem; line-height: 1.8;">
+        Étudiant en 2e année à l'Institut National de l'Eau, spécialité Hydrogéologie. 
+        Passionné d'informatique et de cybersécurité. Mon objectif:  construire des solutions durables et intelligentes. 🚀
+      </p>
+    </section>
+
+    <!-- Filters -->
+    <section id="articles">
+      <h2 class="section-title">
+        📈 Articles Populaires
+      </h2>
+      
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterArticles('all')">Tous</button>
+        <button class="filter-btn" onclick="filterArticles('Programmation')">Programmation</button>
+        <button class="filter-btn" onclick="filterArticles('Développement Web')">Développement Web</button>
+        <button class="filter-btn" onclick="filterArticles('Cybersécurité')">Cybersécurité</button>
+        <button class="filter-btn" onclick="filterArticles('Hydrogéologie')">Hydrogéologie</button>
+      </div>
+
+      <!-- Articles Grid -->
+      <div class="articles-grid" id="articlesGrid"></div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+      <h2>📬 Restez informé !</h2>
+      <p style="opacity: 0.9; font-size: 1.1rem;">Recevez les nouveaux articles directement dans votre boîte mail</p>
+      <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+        <input type="email" class="newsletter-input" placeholder="votre@email.com" required>
+        <button type="submit" class="newsletter-btn">S'abonner</button>
+      </form>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="about-section" id="contact">
+      <h2 style="color: var(--primary-dark); font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">
+        📞 Me Contacter
+      </h2>
+      <div style="text-align: center; font-size: 1.1rem; color: var(--text-light);">
+        <p style="margin-bottom: 1rem;">
+          📱 Téléphone: <a href="tel:+22944219814" style="color: var(--primary); font-weight: 600;">+229 01 44 21 98 14</a>
+        </p>
+        <p>
+          💬 WhatsApp: <a href="https://wa.me/22944219814" target="_blank" style="color: var(--primary); font-weight: 600;">Envoyer un message</a>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Comments Modal -->
+  <div class="modal" id="commentsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">📖 Lire l'article</h3>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalArticleImage" class="modal-article-image" src="" alt="">
+        <h2 id="modalArticleTitle" style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 2rem;"></h2>
+        
+        <div class="article-meta" id="modalArticleMeta"></div>
+        
+        <div id="modalArticleContent" class="modal-article-content"></div>
+
+        <div class="article-actions" style="margin: 2rem 0; padding: 1.5rem; background: var(--bg-light); border-radius: 15px;">
+          <button class="action-btn" id="modalLikeBtn" onclick="likeFromModal()">
+            🤍 <span id="modalLikes">0</span>
+          </button>
+          <button class="action-btn" onclick="shareFromModal()">
+            📤 Partager
+          </button>
+          <button class="action-btn" id="modalSaveBtn" onclick="saveFromModal()">
+            ☆ Sauvegarder
+          </button>
+        </div>
+
+        <!-- Comment Form -->
+        <div class="comments-section">
+          <h3 style="color: var(--primary-dark); margin-bottom: 1.5rem; font-size: 1.5rem;">💬 Commentaires</h3>
+          <div class="comment-form">
+            <input type="text" id="userName" class="comment-input" placeholder="Votre nom">
+            <textarea id="commentText" class="comment-input" rows="4" placeholder="Ajoutez un commentaire..."></textarea>
+            <button class="submit-comment-btn" onclick="submitComment()">📤 Publier</button>
+          </div>
+
+          <!-- Comments List -->
+          <div id="commentsList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+    ↑
+  </button>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <h2 style="font-size: 2rem; margin-bottom: 1rem;">Charns<span style="color: var(--secondary);">Blog</span></h2>
+      <p style="opacity: 0.9; font-size: 1.1rem; margin-bottom: 1.5rem;">
+        Hydrogéologie & Tech - Le blog d'Aurras Charnel
+      </p>
+      
+      <div class="social-links">
+        <a href="https://github.com/Charnscode" target="_blank" class="social-link">GitHub</a>
+        <a href="https://wa.me/22944219814" target="_blank" class="social-link">WhatsApp</a>
+        <a href="https://www.linkedin.com/in/aurras-charnel-kougbe-zogan-b2b42336a" target="_blank" class="social-link">LinkedIn</a>
+        <a href="https://www.instagram.com/charnokgb/" target="_blank" class="social-link">Instagram</a>
+      </div>
+      
+      <p style="opacity: 0.7; font-size: 0.95rem;">© 2025 Aurras Charnel - Tous droits réservés.</p>
+    </div>
+  </footer>
+<script src="script.js"></script>
+
+</body>
+</html>
